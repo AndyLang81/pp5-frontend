@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Login from './Login'; // Login component for token-based login
+import Login from './Login';
+import TaskList from './TaskList'; // Shows tasks once user is logged in
 
 function App() {
-  // This state stores the JWT access token from the backend
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(null); // Stores the access token
 
-  // This function is passed to the Login component to update token state
+  // Updates token when login is successful
   const handleLogin = (newToken) => {
     setToken(newToken);
   };
@@ -13,10 +13,13 @@ function App() {
   return (
     <div className="App">
       <h1>PP5 Task Manager</h1>
+
+      {/* Show login if not logged in yet */}
       {!token ? (
-        <Login onLogin={handleLogin} /> // Show login form if no token yet
+        <Login onLogin={handleLogin} />
       ) : (
-        <p>You are logged in! Token: {token.slice(0, 10)}...</p> // Show token preview if logged in
+        // Once logged in, show the task list
+        <TaskList token={token} />
       )}
     </div>
   );
