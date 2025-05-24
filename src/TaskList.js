@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
 import './App.css';
 
-function TaskList({ token }) {
+function TaskList({ token, API_URL }) {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState('');
   const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [sortField, setSortField] = useState('due_date');
-
-  const API_URL = process.env.REACT_APP_API_URL;
 
   const fetchTasks = async () => {
     try {
@@ -124,7 +122,7 @@ function TaskList({ token }) {
 
       {showForm && (
         <div style={{ marginBottom: '2em' }}>
-          <TaskForm token={token} onTaskAdded={handleTaskAdded} />
+          <TaskForm token={token} onTaskAdded={handleTaskAdded} API_URL={API_URL} />
         </div>
       )}
 
