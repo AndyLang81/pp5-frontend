@@ -58,3 +58,9 @@ li {
 h3 {
   margin: 0 0 0.5em 0;
 }
+
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1em;
+}
