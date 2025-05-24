@@ -4,7 +4,8 @@ import TaskForm from './TaskForm';
 function TaskList({ token }) {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState('');
-  const [editingTask, setEditingTask] = useState(null); // Track task being edited
+  const [editingTask, setEditingTask] = useState(null);
+  const [showForm, setShowForm] = useState(false); // Controls visibility of TaskForm
 
   const fetchTasks = async () => {
     try {
@@ -15,7 +16,6 @@ function TaskList({ token }) {
       });
 
       if (!response.ok) throw new Error('Failed to fetch tasks');
-
       const data = await response.json();
       setTasks(data);
       setError('');
@@ -31,6 +31,7 @@ function TaskList({ token }) {
 
   const handleTaskAdded = () => {
     fetchTasks();
+    setShowForm(false); // Hide form after adding
   };
 
   const handleDelete = async (id) => {
@@ -49,9 +50,7 @@ function TaskList({ token }) {
     }
   };
 
-  const handleEdit = (task) => {
-    setEditingTask(task); // Set the task being edited
-  };
+  const handleEdit = (task) => setEditingTask(task);
 
   const handleEditSubmit = async (event) => {
     event.preventDefault();
@@ -84,7 +83,16 @@ function TaskList({ token }) {
   return (
     <div>
       <h2>Your Tasks</h2>
-      <TaskForm token={token} onTaskAdded={handleTaskAdded} />
+
+      <button onClick={() => setShowForm(!showForm)} style={{ marginBottom: '1em' }}>
+        {showForm ? 'Hide Task Form' : 'Add Task'}
+      </button>
+
+      {showForm && (
+        <div style={{ marginBottom: '2em' }}>
+          <TaskForm token={token} onTaskAdded={handleTaskAdded} />
+        </div>
+      )}
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
