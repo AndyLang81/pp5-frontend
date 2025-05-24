@@ -1,34 +1,54 @@
 import React, { useState } from 'react';
 
-// A form that lets the user add a new task
+// Form to create a task with all required fields
 function TaskForm({ token, onTaskAdded }) {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [priority, setPriority] = useState('medium');
+  const [category, setCategory] = useState('');
   const [error, setError] = useState('');
 
-  // Send the new task to the API
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const payload = {
+      title,
+      description,
+      due_date: dueDate,
+      priority,
+      category,
+    };
+
+    console.log("Sending payload:", payload); // Debug log
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Auth header
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ title }), // Send only title
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
+        const errData = await response.json();
+        console.error('Backend error:', errData); // Debug backend response
         throw new Error('Failed to create task');
       }
 
-      setTitle(''); // Clear the input field
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setDueDate('');
+      setPriority('medium');
+      setCategory('');
       setError('');
-      onTaskAdded(); // Notify parent to refresh task list
+      onTaskAdded(); // Refresh list
+
     } catch (err) {
       setError('Could not add task.');
-      console.error(err);
     }
   };
 
@@ -36,14 +56,27 @@ function TaskForm({ token, onTaskAdded }) {
     <form onSubmit={handleSubmit}>
       <h3>Add Task</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input
-        type="text"
-        placeholder="Enter task title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <button type="submit">Add</button>
+
+      <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+      <br />
+
+      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <br />
+
+      <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
+      <br />
+
+      <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <br />
+
+      <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
+      <br />
+
+      <button type="submit">Add Task</button>
     </form>
   );
 }

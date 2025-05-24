@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import TaskForm from './TaskForm'; // Import the form to add new tasks
+import TaskForm from './TaskForm';
 
 // This component fetches and displays the user's tasks
 function TaskList({ token }) {
-  const [tasks, setTasks] = useState([]);     // Stores the list of tasks
-  const [error, setError] = useState('');     // Stores any fetch error
+  const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState('');
 
-  // This function fetches tasks from the backend API
+  // Fetch tasks from the backend API
   const fetchTasks = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
@@ -20,7 +20,7 @@ function TaskList({ token }) {
       }
 
       const data = await response.json();
-      setTasks(data);       // Save the fetched tasks
+      setTasks(data);
       setError('');
     } catch (err) {
       setError('Could not load tasks.');
@@ -28,14 +28,14 @@ function TaskList({ token }) {
     }
   };
 
-  // Fetch tasks once on component mount
+  // Run once when component mounts
   useEffect(() => {
     fetchTasks();
   }, [token]);
 
-  // This is called by TaskForm after a task is successfully added
+  // Called after a new task is added
   const handleTaskAdded = () => {
-    fetchTasks(); // Refresh the list
+    fetchTasks();
   };
 
   return (
@@ -45,16 +45,23 @@ function TaskList({ token }) {
       {/* Task creation form */}
       <TaskForm token={token} onTaskAdded={handleTaskAdded} />
 
-      {/* Error message if something goes wrong */}
+      {/* Show any error */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Display task list or fallback if empty */}
+      {/* List of tasks */}
       {tasks.length === 0 ? (
         <p>No tasks yet.</p>
       ) : (
-        <ul>
+        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
           {tasks.map((task) => (
-            <li key={task.id}>{task.title}</li>
+            <li key={task.id} style={{ border: '1px solid #ccc', padding: '1em', marginBottom: '1em' }}>
+              <h3>{task.title}</h3>
+              <p><strong>Description:</strong> {task.description || 'N/A'}</p>
+              <p><strong>Due Date:</strong> {task.due_date}</p>
+              <p><strong>Priority:</strong> {task.priority}</p>
+              <p><strong>Status:</strong> {task.state}</p>
+              <p><strong>Category:</strong> {task.category || 'None'}</p>
+            </li>
           ))}
         </ul>
       )}
