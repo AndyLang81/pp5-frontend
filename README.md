@@ -83,4 +83,4 @@ This is the **frontend** of the PP5 Task Manager, a full-stack productivity web 
 
 ## Author
 
-- Your Name
+Anders Langhoff
