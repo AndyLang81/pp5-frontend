@@ -9,9 +9,11 @@ function TaskList({ token }) {
   const [showForm, setShowForm] = useState(false);
   const [sortField, setSortField] = useState('due_date');
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const fetchTasks = async () => {
     try {
-      const response = await fetch('https://pp5-backend.onrender.com/api/tasks/', {
+      const response = await fetch(`${API_URL}/api/tasks/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -38,7 +40,7 @@ function TaskList({ token }) {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${id}/`, {
+      const response = await fetch(`${API_URL}/api/tasks/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -58,7 +60,7 @@ function TaskList({ token }) {
     event.preventDefault();
 
     try {
-      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${editingTask.id}/`, {
+      const response = await fetch(`${API_URL}/api/tasks/${editingTask.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ function TaskList({ token }) {
     if (task.state === 'done') return;
 
     try {
-      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${task.id}/`, {
+      const response = await fetch(`${API_URL}/api/tasks/${task.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +143,7 @@ function TaskList({ token }) {
       ) : (
         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
           {sortTasks(tasks).map((task) => (
-           <li key={task.id} className={`task-tile task-priority-${task.priority}`}>
+            <li key={task.id} className={`task-tile task-priority-${task.priority}`}>
               {editingTask?.id === task.id ? (
                 <form onSubmit={handleEditSubmit}>
                   <input type="text" name="title" value={editingTask.title} onChange={handleEditChange} required />
