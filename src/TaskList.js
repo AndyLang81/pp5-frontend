@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
+import './App.css';
 
 function TaskList({ token }) {
   const [tasks, setTasks] = useState([]);
@@ -140,7 +141,7 @@ function TaskList({ token }) {
       ) : (
         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
           {sortTasks(tasks).map((task) => (
-            <li key={task.id} style={{ border: '1px solid #ccc', padding: '1em', marginBottom: '1em' }}>
+           <li key={task.id} className={`task-tile task-priority-${task.priority}`}>
               {editingTask?.id === task.id ? (
                 <form onSubmit={handleEditSubmit}>
                   <input type="text" name="title" value={editingTask.title} onChange={handleEditChange} required />

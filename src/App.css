@@ -64,3 +64,24 @@ h3 {
   justify-content: flex-end;
   margin-bottom: 1em;
 }
+
+.task-tile {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 6px;
+  background-color: #fff; /* fallback */
+}
+
+/* Priority-based colors */
+.task-priority-low {
+  background-color: #e8fbe8 !important;
+}
+
+.task-priority-medium {
+  background-color: #fffdd0 !important;
+}
+
+.task-priority-high {
+  background-color: #ffe6e6 !important;
+}
