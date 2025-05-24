@@ -5,7 +5,8 @@ function TaskList({ token }) {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState('');
   const [editingTask, setEditingTask] = useState(null);
-  const [showForm, setShowForm] = useState(false); // Controls visibility of TaskForm
+  const [showForm, setShowForm] = useState(false);
+  const [sortField, setSortField] = useState('due_date');
 
   const fetchTasks = async () => {
     try {
@@ -31,7 +32,7 @@ function TaskList({ token }) {
 
   const handleTaskAdded = () => {
     fetchTasks();
-    setShowForm(false); // Hide form after adding
+    setShowForm(false);
   };
 
   const handleDelete = async (id) => {
@@ -80,6 +81,36 @@ function TaskList({ token }) {
     });
   };
 
+  const markAsComplete = async (task) => {
+    if (task.state === 'done') return;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/tasks/${task.id}/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ...task, state: 'done' }),
+      });
+
+      if (!response.ok) throw new Error('Failed to mark complete');
+      fetchTasks();
+    } catch (err) {
+      console.error('Error marking task as complete:', err);
+    }
+  };
+
+  const sortTasks = (taskList) => {
+    return [...taskList].sort((a, b) => {
+      if (sortField === 'due_date') return new Date(a.due_date) - new Date(b.due_date);
+      if (sortField === 'title') return a.title.localeCompare(b.title);
+      if (sortField === 'priority') return a.priority.localeCompare(b.priority);
+      if (sortField === 'state') return a.state.localeCompare(b.state);
+      return 0;
+    });
+  };
+
   return (
     <div>
       <h2>Your Tasks</h2>
@@ -94,36 +125,27 @@ function TaskList({ token }) {
         </div>
       )}
 
+      <label htmlFor="sort">Sort by:</label>{' '}
+      <select id="sort" value={sortField} onChange={(e) => setSortField(e.target.value)}>
+        <option value="due_date">Due Date</option>
+        <option value="title">Title</option>
+        <option value="priority">Priority</option>
+        <option value="state">Status</option>
+      </select>
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {tasks.length === 0 ? (
         <p>No tasks yet.</p>
       ) : (
         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-          {tasks.map((task) => (
+          {sortTasks(tasks).map((task) => (
             <li key={task.id} style={{ border: '1px solid #ccc', padding: '1em', marginBottom: '1em' }}>
               {editingTask?.id === task.id ? (
                 <form onSubmit={handleEditSubmit}>
-                  <input
-                    type="text"
-                    name="title"
-                    value={editingTask.title}
-                    onChange={handleEditChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="description"
-                    value={editingTask.description}
-                    onChange={handleEditChange}
-                  />
-                  <input
-                    type="date"
-                    name="due_date"
-                    value={editingTask.due_date}
-                    onChange={handleEditChange}
-                    required
-                  />
+                  <input type="text" name="title" value={editingTask.title} onChange={handleEditChange} required />
+                  <input type="text" name="description" value={editingTask.description} onChange={handleEditChange} />
+                  <input type="date" name="due_date" value={editingTask.due_date} onChange={handleEditChange} required />
                   <select name="priority" value={editingTask.priority} onChange={handleEditChange}>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -134,12 +156,7 @@ function TaskList({ token }) {
                     <option value="in_progress">In Progress</option>
                     <option value="done">Done</option>
                   </select>
-                  <input
-                    type="text"
-                    name="category"
-                    value={editingTask.category}
-                    onChange={handleEditChange}
-                  />
+                  <input type="text" name="category" value={editingTask.category} onChange={handleEditChange} />
                   <button type="submit">Save</button>
                   <button type="button" onClick={() => setEditingTask(null)}>Cancel</button>
                 </form>
@@ -151,8 +168,13 @@ function TaskList({ token }) {
                   <p><strong>Priority:</strong> {task.priority}</p>
                   <p><strong>Status:</strong> {task.state}</p>
                   <p><strong>Category:</strong> {task.category || 'None'}</p>
-                  <button onClick={() => handleEdit(task)}>Edit</button>
-                  <button onClick={() => handleDelete(task.id)}>Delete</button>
+                  <div style={{ display: 'flex', gap: '0.5em', flexWrap: 'wrap' }}>
+                    <button onClick={() => handleEdit(task)}>Edit</button>
+                    <button onClick={() => handleDelete(task.id)}>Delete</button>
+                    {task.state !== 'done' && (
+                      <button onClick={() => markAsComplete(task)}>Complete</button>
+                    )}
+                  </div>
                 </>
               )}
             </li>
