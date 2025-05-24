@@ -8,19 +8,23 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('fetch('https://pp5-backend.onrender.com/api/token/'', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch('https://pp5-backend.onrender.com/api/token/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      onLogin(data.access); // send token to App
-      setError('');
-    } else {
-      setError('Login failed. Check your credentials.');
+      if (response.ok) {
+        onLogin(data.access); // send token to App
+        setError('');
+      } else {
+        setError('Login failed. Check your credentials.');
+      }
+    } catch (err) {
+      setError('Network error, please try again.');
     }
   };
 
