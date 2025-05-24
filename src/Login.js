@@ -17,13 +17,16 @@ function Login({ onLogin }) {
 
       const data = await response.json();
 
+      console.log('Login response:', response.status, data); //  DEBUG
+
       if (response.ok) {
-        onLogin(data.access); // send token to App
+        onLogin(data.access);
         setError('');
       } else {
-        setError('Login failed. Check your credentials.');
+        setError(data.detail || 'Login failed. Check your credentials.');
       }
     } catch (err) {
+      console.error('Network error:', err); //  DEBUG
       setError('Network error, please try again.');
     }
   };
