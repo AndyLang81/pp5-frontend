@@ -1,45 +1,60 @@
 import React, { useEffect, useState } from 'react';
+import TaskForm from './TaskForm'; // Import the form to add new tasks
 
 // This component fetches and displays the user's tasks
 function TaskList({ token }) {
-  const [tasks, setTasks] = useState([]); // Holds the list of tasks
-  const [error, setError] = useState(''); // Holds any error message
+  const [tasks, setTasks] = useState([]);     // Stores the list of tasks
+  const [error, setError] = useState('');     // Stores any fetch error
 
-  // Fetch tasks from the backend when the component loads
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include auth token in header
-          },
-        });
+  // This function fetches tasks from the backend API
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch tasks');
-        }
-
-        const data = await response.json(); // Convert response to JSON
-        setTasks(data); // Update the state with the task list
-      } catch (err) {
-        setError('Could not load tasks.'); // Set error message
-        console.error(err); // For developer debugging
+      if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
       }
-    };
 
-    fetchTasks(); // Call fetch function when component mounts
-  }, [token]); // Only re-run when token changes
+      const data = await response.json();
+      setTasks(data);       // Save the fetched tasks
+      setError('');
+    } catch (err) {
+      setError('Could not load tasks.');
+      console.error(err);
+    }
+  };
+
+  // Fetch tasks once on component mount
+  useEffect(() => {
+    fetchTasks();
+  }, [token]);
+
+  // This is called by TaskForm after a task is successfully added
+  const handleTaskAdded = () => {
+    fetchTasks(); // Refresh the list
+  };
 
   return (
     <div>
       <h2>Your Tasks</h2>
+
+      {/* Task creation form */}
+      <TaskForm token={token} onTaskAdded={handleTaskAdded} />
+
+      {/* Error message if something goes wrong */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {/* Display task list or fallback if empty */}
       {tasks.length === 0 ? (
         <p>No tasks yet.</p>
       ) : (
         <ul>
           {tasks.map((task) => (
-            <li key={task.id}>{task.title}</li> // Show each task title
+            <li key={task.id}>{task.title}</li>
           ))}
         </ul>
       )}
