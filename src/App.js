@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import Login from './Login';
-import TaskList from './TaskList'; // Shows tasks once user is logged in
+import TaskList from './TaskList';
 
 function App() {
-  const [token, setToken] = useState(null); // Stores the access token
+  const [token, setToken] = useState(null); // Stores the user's access token
 
-  // Updates token when login is successful
+  // Called after successful login to store the token
   const handleLogin = (newToken) => {
     setToken(newToken);
+  };
+
+  // Log the user out by clearing the token
+  const handleLogout = () => {
+    setToken(null);
   };
 
   return (
     <div className="App">
       <h1>PP5 Task Manager</h1>
 
-      {/* Show login if not logged in yet */}
-      {!token ? (
-        <Login onLogin={handleLogin} />
+      {/* If logged in, show logout button and task list */}
+      {token ? (
+        <>
+          <button onClick={handleLogout} style={{ marginBottom: '1em' }}>
+            Log Out
+          </button>
+          <TaskList token={token} />
+        </>
       ) : (
-        // Once logged in, show the task list
-        <TaskList token={token} />
+        // If not logged in, show the login screen
+        <Login onLogin={handleLogin} />
       )}
     </div>
   );
