@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# PP5 Task Manager - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This is the **frontend** of the PP5 Task Manager, a full-stack productivity web app developed for the Code Institute Portfolio Project 5. The frontend is built using **React** and connects to a **Django REST Framework** backend. Users can log in, create, update, delete, and complete tasks. Tasks can be sorted by various attributes and displayed in a responsive tile layout.
 
-In the project directory, you can run:
+## Live Demo
 
-### `npm start`
+[Vercel Frontend Deployment](https://your-frontend.vercel.app)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- User authentication (login/logout)
+- Add, edit, and delete tasks
+- Mark tasks as complete
+- Sort tasks by due date, title, priority, and status
+- Collapse/expand task form
+- Color-coded priority levels (low, medium, high)
+- Responsive layout (mobile and desktop)
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React
+- JavaScript (ES6+)
+- HTML5/CSS3
+- JSX
+- Vercel for deployment
 
-### `npm run build`
+## Setup Instructions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the frontend repo:
+   ```bash
+   git clone https://github.com/yourusername/pp5-frontend.git
+   cd pp5-frontend
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Create a `.env` file:
+   ```
+   REACT_APP_API_URL=https://pp5-backend.onrender.com
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### `npm run eject`
+4. Run the app locally:
+   ```bash
+   npm start
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+5. Build for production:
+   ```bash
+   npm run build
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## User Stories
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- As a user, I want to log in securely so that I can manage my tasks.
+- As a user, I want to view my tasks in an organized way.
+- As a user, I want to add a new task using a simple form.
+- As a user, I want to edit or delete tasks that I’ve created.
+- As a user, I want to mark tasks as complete.
+- As a user, I want to sort tasks by different attributes.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Agile / GitHub Project
 
-## Learn More
+- All development followed Agile methodology with issues and tasks tracked using GitHub Projects and Issues.
+- Commits are frequent, descriptive, and tied to specific changes or features.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Testing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Manual testing performed across Chrome, Firefox, and Edge.
+- Responsive behavior tested on mobile and desktop.
+- Authentication, CRUD operations, and sorting all manually tested.
+- Documented test cases available upon request.
 
-### Code Splitting
+## Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Deployed using Vercel.
+- Auto-deploys enabled from main branch.
+- Environment variables set securely in Vercel dashboard.
 
-### Analyzing the Bundle Size
+## Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Your Name
