@@ -11,7 +11,7 @@ function TaskList({ token }) {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
+      const response = await fetch('https://pp5-backend.onrender.com/api/tasks/', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -38,7 +38,7 @@ function TaskList({ token }) {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/tasks/${id}/`, {
+      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -58,7 +58,7 @@ function TaskList({ token }) {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/tasks/${editingTask.id}/`, {
+      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${editingTask.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ function TaskList({ token }) {
     if (task.state === 'done') return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/tasks/${task.id}/`, {
+      const response = await fetch(`https://pp5-backend.onrender.com/api/tasks/${task.id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
