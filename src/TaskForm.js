@@ -6,6 +6,7 @@ function TaskForm({ token, onTaskAdded }) {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('medium');
+  const [state, setState] = useState('open'); // ← Add state selector
   const [category, setCategory] = useState('');
   const [error, setError] = useState('');
 
@@ -17,10 +18,9 @@ function TaskForm({ token, onTaskAdded }) {
       description,
       due_date: dueDate,
       priority,
+      state,            // ← Required field that was missing before
       category,
     };
-
-    console.log("Sending payload:", payload); // Debug log
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
@@ -34,18 +34,19 @@ function TaskForm({ token, onTaskAdded }) {
 
       if (!response.ok) {
         const errData = await response.json();
-        console.error('Backend error:', errData); // Debug backend response
+        console.error('Backend error:', errData);
         throw new Error('Failed to create task');
       }
 
-      // Reset form
+      // Clear form and trigger task list refresh
       setTitle('');
       setDescription('');
       setDueDate('');
       setPriority('medium');
+      setState('open');
       setCategory('');
       setError('');
-      onTaskAdded(); // Refresh list
+      onTaskAdded();
 
     } catch (err) {
       setError('Could not add task.');
@@ -70,6 +71,13 @@ function TaskForm({ token, onTaskAdded }) {
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
+      </select>
+      <br />
+
+      <select value={state} onChange={(e) => setState(e.target.value)}>
+        <option value="open">Open</option>
+        <option value="in_progress">In Progress</option>
+        <option value="done">Done</option>
       </select>
       <br />
 
