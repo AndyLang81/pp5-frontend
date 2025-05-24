@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
-// Form to create a task with all required fields
 function TaskForm({ token, onTaskAdded }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('medium');
-  const [state, setState] = useState('open'); // ← Add state selector
+  const [state, setState] = useState('open');
   const [category, setCategory] = useState('');
   const [error, setError] = useState('');
+
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,13 +19,12 @@ function TaskForm({ token, onTaskAdded }) {
       description,
       due_date: dueDate,
       priority,
-      state,            // ← Required field that was missing before
+      state,
       category,
     };
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tasks/`, {
-
+      const response = await fetch(`${API_URL}/api/tasks/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function TaskForm({ token, onTaskAdded }) {
         throw new Error('Failed to create task');
       }
 
-      // Clear form and trigger task list refresh
+      // Clear form
       setTitle('');
       setDescription('');
       setDueDate('');
@@ -61,30 +61,24 @@ function TaskForm({ token, onTaskAdded }) {
 
       <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
       <br />
-
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
       <br />
-
       <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
       <br />
-
       <select value={priority} onChange={(e) => setPriority(e.target.value)}>
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
       </select>
       <br />
-
       <select value={state} onChange={(e) => setState(e.target.value)}>
         <option value="open">Open</option>
         <option value="in_progress">In Progress</option>
         <option value="done">Done</option>
       </select>
       <br />
-
       <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
       <br />
-
       <button type="submit">Add Task</button>
     </form>
   );
