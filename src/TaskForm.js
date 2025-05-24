@@ -9,7 +9,7 @@ function TaskForm({ token, onTaskAdded }) {
   const [category, setCategory] = useState('');
   const [error, setError] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,7 +39,6 @@ function TaskForm({ token, onTaskAdded }) {
         throw new Error('Failed to create task');
       }
 
-      // Clear form
       setTitle('');
       setDescription('');
       setDueDate('');
@@ -58,7 +57,6 @@ function TaskForm({ token, onTaskAdded }) {
     <form onSubmit={handleSubmit}>
       <h3>Add Task</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
       <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
       <br />
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
