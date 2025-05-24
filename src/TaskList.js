@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
 
-// This component fetches and displays the user's tasks
+// This component handles listing and deleting tasks
 function TaskList({ token }) {
-  const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState('');
+  const [tasks, setTasks] = useState([]); // Store fetched tasks
+  const [error, setError] = useState(''); // Store any error messages
 
-  // Fetch tasks from the backend API
+  // Fetch tasks from the API
   const fetchTasks = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/tasks/', {
@@ -28,27 +28,49 @@ function TaskList({ token }) {
     }
   };
 
-  // Run once when component mounts
+  // Call once on component mount and whenever token changes
   useEffect(() => {
     fetchTasks();
   }, [token]);
 
-  // Called after a new task is added
+  // Called by the TaskForm when a task is added
   const handleTaskAdded = () => {
     fetchTasks();
+  };
+
+  // Handle deleting a task
+  const handleDelete = async (taskId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/tasks/${taskId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+
+      // Refresh task list after deletion
+      fetchTasks();
+    } catch (err) {
+      console.error(err);
+      setError('Could not delete task.');
+    }
   };
 
   return (
     <div>
       <h2>Your Tasks</h2>
 
-      {/* Task creation form */}
+      {/* Show task creation form */}
       <TaskForm token={token} onTaskAdded={handleTaskAdded} />
 
-      {/* Show any error */}
+      {/* Show any errors */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* List of tasks */}
+      {/* Display tasks or fallback text */}
       {tasks.length === 0 ? (
         <p>No tasks yet.</p>
       ) : (
@@ -61,6 +83,12 @@ function TaskList({ token }) {
               <p><strong>Priority:</strong> {task.priority}</p>
               <p><strong>Status:</strong> {task.state}</p>
               <p><strong>Category:</strong> {task.category || 'None'}</p>
+              <button
+                onClick={() => handleDelete(task.id)}
+                style={{ marginTop: '0.5em', backgroundColor: '#e74c3c', color: 'white', border: 'none', padding: '0.5em' }}
+              >
+                Delete Task
+              </button>
             </li>
           ))}
         </ul>
