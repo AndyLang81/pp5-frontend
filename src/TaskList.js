@@ -32,14 +32,17 @@ function TaskList({ token, API_URL }) {
     fetchTasks();
   }, [token]);
 
-  const handleTaskAdded = (text, type) => {
-    fetchTasks();
-    setShowForm(false);
+  const showMessage = (text, type) => {
     setMessage({ text, type });
-
     setTimeout(() => {
       setMessage({ text: '', type: '' });
     }, 3000);
+  };
+
+  const handleTaskAdded = (text, type) => {
+    fetchTasks();
+    setShowForm(false);
+    showMessage(text, type);
   };
 
   const handleDelete = async (id) => {
@@ -52,9 +55,12 @@ function TaskList({ token, API_URL }) {
       });
 
       if (!response.ok) throw new Error('Delete failed');
+
       fetchTasks();
+      showMessage('Task deleted successfully.', 'success');
     } catch (err) {
       console.error('Could not delete task', err);
+      showMessage('Failed to delete task.', 'error');
     }
   };
 
@@ -76,8 +82,10 @@ function TaskList({ token, API_URL }) {
       if (!response.ok) throw new Error('Update failed');
       setEditingTask(null);
       fetchTasks();
+      showMessage('Task updated successfully.', 'success');
     } catch (err) {
       console.error('Could not update task', err);
+      showMessage('Failed to update task.', 'error');
     }
   };
 
