@@ -8,35 +8,33 @@ This is the **frontend** of the PP5 Task Manager, a full-stack productivity web 
 
 [Vercel Frontend Deployment](https://your-frontend.vercel.app)
 
-Note: The backend must be live for the frontend to function.
-
 ## Features
 
 - User authentication (login/logout)
-- Create, edit, delete tasks
+- Add, edit, and delete tasks
 - Mark tasks as complete
-- Sort tasks by due date, title, priority, and state
-- Toggle task form (collapse/expand)
-- Color-coded priority indicators
-- Floating confirmation/error messages
-- Fully responsive layout (mobile and desktop)
+- Sort tasks by due date, title, priority, and status
+- Collapse/expand task form
+- Color-coded priority levels (low, medium, high)
+- Responsive layout (mobile and desktop)
 
 ## Technologies Used
 
-- React (JSX)
+- React
 - JavaScript (ES6+)
-- HTML5 & CSS3
+- HTML5/CSS3
+- JSX
 - Vercel for deployment
 
 ## Setup Instructions
 
-1. Clone the frontend repository:
+1. Clone the frontend repo:
    ```bash
    git clone https://github.com/yourusername/pp5-frontend.git
    cd pp5-frontend
    ```
 
-2. Create a `.env` file in the root:
+2. Create a `.env` file:
    ```
    REACT_APP_API_URL=https://pp5-backend.onrender.com
    ```
@@ -58,47 +56,53 @@ Note: The backend must be live for the frontend to function.
 
 ## User Stories
 
-- As a user, I want to log in securely.
-- As a user, I want to view my tasks in a clear and organized format.
-- As a user, I want to add, edit, delete, and complete tasks.
-- As a user, I want to sort tasks by date, title, priority, or state.
-- As a user, I want visual feedback when I interact with the app.
-- As a user, I want the app to work well on both desktop and mobile.
+- As a user, I want to log in securely so that I can manage my tasks.
+- As a user, I want to view my tasks in an organized way.
+- As a user, I want to add a new task using a simple form.
+- As a user, I want to edit or delete tasks that I’ve created.
+- As a user, I want to mark tasks as complete.
+- As a user, I want to sort tasks by different attributes.
 
 ## Agile / GitHub Project
 
-- All development followed Agile methodology.
-- GitHub Projects and Issues were used to manage tasks and sprints.
-- Each major feature had its own issue, branch, and commits.
-- Frequent and descriptive commits were made throughout development.
-
-## Assessment Coverage
-
-| Requirement                          | Status     |
-|--------------------------------------|------------|
-| 4.1 CRUD operations                  | Complete   |
-| 4.2 Data change notifications        | Implemented via floating messages |
-| 4.3 User-friendly data presentation  | Tasks are sorted, styled, and responsive |
-| 4.4 Exception handling and feedback  | Fully handled for all actions |
-| 4.5 JSX code formatting              | Linted and manually cleaned |
-| 4.6 Two validated forms              | Add Task and Edit Task |
-| 4.7 Login state indication           | UI gated behind login; logout visible |
-| 4.8 Clean final deployment           | No debug flags, no broken API links |
+- All development followed Agile methodology with issues and tasks tracked using GitHub Projects and Issues.
+- Commits are frequent, descriptive, and tied to specific changes or features.
 
 ## Testing
 
-- Manual testing across Chrome, Firefox, and Edge.
-- Mobile responsiveness tested using Chrome DevTools and Android device.
-- Tested CRUD flows: create, update, delete, mark as done.
-- Form validation tested for required fields.
-- Error handling tested with invalid inputs and API outages.
+- Manual testing performed across Chrome, Firefox, and Edge.
+- Responsive behavior tested on mobile and desktop.
+- Authentication, CRUD operations, and sorting all manually tested.
+- Documented test cases available upon request.
+
+## Screenshots
+
+### Login Screen
+![Login](screenshots/login.png)
+
+### Task List View
+![Task List](screenshots/task-list.png)
+
+### Add Task Form
+![Add Task](screenshots/add-task.png)
+
+### Success Message - Task Added
+![Success Message](screenshots/successmessage.png)
+
+### Edit Task Mode
+![Edit Task](screenshots/edit-task.png)
+
+### Success Message - Task Deleted
+![Delete Success](screenshots/delete-succes.png)
+
+### Mobile View
+![Mobile View](screenshots/mobile-view.png)
 
 ## Deployment
 
-- Deployed to Vercel from the `main` branch.
-- Auto-deploy enabled for continuous delivery.
-- `.env` variables set securely in the Vercel dashboard.
-- Final build matches local development version.
+- Deployed using Vercel.
+- Auto-deploys enabled from main branch.
+- Environment variables set securely in Vercel dashboard.
 
 ## Author
 
