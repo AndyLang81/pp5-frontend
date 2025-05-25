@@ -8,6 +8,7 @@ function TaskList({ token, API_URL }) {
   const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [sortField, setSortField] = useState('due_date');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const fetchTasks = async () => {
     try {
@@ -31,9 +32,14 @@ function TaskList({ token, API_URL }) {
     fetchTasks();
   }, [token]);
 
-  const handleTaskAdded = () => {
+  const handleTaskAdded = (text, type) => {
     fetchTasks();
     setShowForm(false);
+    setMessage({ text, type });
+
+    setTimeout(() => {
+      setMessage({ text: '', type: '' });
+    }, 3000);
   };
 
   const handleDelete = async (id) => {
@@ -114,6 +120,25 @@ function TaskList({ token, API_URL }) {
 
   return (
     <div>
+      {/* Floating message top-left */}
+      {message.text && (
+        <div style={{
+          position: 'fixed',
+          top: '1em',
+          left: '1em',
+          zIndex: 1000,
+          padding: '1em',
+          backgroundColor: message.type === 'error' ? '#ffe6e6' : '#e6ffe6',
+          border: `1px solid ${message.type === 'error' ? 'red' : 'green'}`,
+          color: message.type === 'error' ? 'darkred' : 'darkgreen',
+          borderRadius: '5px',
+          boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+          fontWeight: 'bold',
+        }}>
+          {message.text}
+        </div>
+      )}
+
       <h2>Your Tasks</h2>
 
       <button onClick={() => setShowForm(!showForm)} style={{ marginBottom: '1em' }}>
