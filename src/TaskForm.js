@@ -11,6 +11,17 @@ function TaskForm({ token, onTaskAdded, API_URL }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Basic frontend validation
+    if (!title.trim()) {
+      onTaskAdded('Title is required.', 'error');
+      return;
+    }
+
+    if (!dueDate) {
+      onTaskAdded('Due date is required.', 'error');
+      return;
+    }
+
     const payload = {
       title,
       description,
@@ -31,7 +42,9 @@ function TaskForm({ token, onTaskAdded, API_URL }) {
       });
 
       if (!response.ok) {
-        onTaskAdded('Failed to create task.', 'error');
+        const data = await response.json();
+        const errorMsg = data?.detail || 'Failed to create task.';
+        onTaskAdded(errorMsg, 'error');
         return;
       }
 
@@ -45,7 +58,8 @@ function TaskForm({ token, onTaskAdded, API_URL }) {
       onTaskAdded('Task added successfully.', 'success');
 
     } catch (err) {
-      onTaskAdded('Could not add task.', 'error');
+      console.error('Error while creating task:', err);
+      onTaskAdded('Could not connect to the server.', 'error');
     }
   };
 
