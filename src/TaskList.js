@@ -70,6 +70,16 @@ function TaskList({ token, API_URL }) {
   const handleEditSubmit = async (event) => {
     event.preventDefault();
 
+    if (!editingTask.title.trim()) {
+      showMessage('Title is required.', 'error');
+      return;
+    }
+
+    if (!editingTask.due_date) {
+      showMessage('Due date is required.', 'error');
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/tasks/${editingTask.id}/`, {
         method: 'PUT',
