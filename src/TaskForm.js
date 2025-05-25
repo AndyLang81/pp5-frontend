@@ -8,6 +8,7 @@ function TaskForm({ token, onTaskAdded }) {
   const [state, setState] = useState('open');
   const [category, setCategory] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
@@ -46,17 +47,22 @@ function TaskForm({ token, onTaskAdded }) {
       setState('open');
       setCategory('');
       setError('');
+      setSuccess('Task added successfully!');
       onTaskAdded();
 
+      setTimeout(() => setSuccess(''), 3000); // Clear success after 3s
     } catch (err) {
       setError('Could not add task.');
+      setSuccess('');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h3>Add Task</h3>
+      {success && <p style={{ color: 'green' }}>{success}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      
       <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
       <br />
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
