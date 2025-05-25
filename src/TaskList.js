@@ -24,6 +24,7 @@ function TaskList({ token, API_URL }) {
       setError('');
     } catch (err) {
       setError('Could not load tasks.');
+      showMessage('Failed to load tasks.', 'error');
       console.error(err);
     }
   };
@@ -79,7 +80,12 @@ function TaskList({ token, API_URL }) {
         body: JSON.stringify(editingTask),
       });
 
-      if (!response.ok) throw new Error('Update failed');
+      if (!response.ok) {
+        const data = await response.json();
+        const msg = data?.detail || 'Update failed';
+        throw new Error(msg);
+      }
+
       setEditingTask(null);
       fetchTasks();
       showMessage('Task updated successfully.', 'success');
@@ -110,9 +116,12 @@ function TaskList({ token, API_URL }) {
       });
 
       if (!response.ok) throw new Error('Failed to mark complete');
+
       fetchTasks();
+      showMessage('Task marked as complete.', 'success');
     } catch (err) {
       console.error('Error marking task as complete:', err);
+      showMessage('Failed to mark task as complete.', 'error');
     }
   };
 
