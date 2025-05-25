@@ -47,22 +47,19 @@ function TaskForm({ token, onTaskAdded }) {
       setState('open');
       setCategory('');
       setError('');
-      setSuccess('Task added successfully!');
+      setSuccess('Task created successfully!');
       onTaskAdded();
-
-      setTimeout(() => setSuccess(''), 3000); // Clear success after 3s
     } catch (err) {
-      setError('Could not add task.');
       setSuccess('');
+      setError('Could not add task.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h3>Add Task</h3>
-      {success && <p style={{ color: 'green' }}>{success}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      
+      {success && <p style={{ color: 'green' }}>{success}</p>}
       <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
       <br />
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
