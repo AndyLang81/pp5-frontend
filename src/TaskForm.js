@@ -7,8 +7,7 @@ function TaskForm({ token, onTaskAdded }) {
   const [priority, setPriority] = useState('medium');
   const [state, setState] = useState('open');
   const [category, setCategory] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
@@ -37,29 +36,36 @@ function TaskForm({ token, onTaskAdded }) {
       if (!response.ok) {
         const errData = await response.json();
         console.error('Backend error:', errData);
-        throw new Error('Failed to create task');
+        setMessage({ text: 'Failed to create task.', type: 'error' });
+        return;
       }
 
+      // Reset form and show success message
       setTitle('');
       setDescription('');
       setDueDate('');
       setPriority('medium');
       setState('open');
       setCategory('');
-      setError('');
-      setSuccess('Task created successfully!');
+      setMessage({ text: 'Task added successfully.', type: 'success' });
       onTaskAdded();
+
     } catch (err) {
-      setSuccess('');
-      setError('Could not add task.');
+      setMessage({ text: 'Could not add task.', type: 'error' });
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h3>Add Task</h3>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+
+      {/* Message display */}
+      {message.text && (
+        <p style={{ color: message.type === 'error' ? 'red' : 'green' }}>
+          {message.text}
+        </p>
+      )}
+
       <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
       <br />
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
